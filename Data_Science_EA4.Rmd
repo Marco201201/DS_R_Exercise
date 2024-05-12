@@ -1,0 +1,100 @@
+---
+title: "Data_Science_EA4_Marco_Krömer"
+author: "Marco_Krömer"
+date: "2024-05-10"
+output: html_document
+---
+
+## Setup
+
+Import the data("iris")
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+library(datasets)
+library(ggplot2)
+data(iris)
+```
+
+## Scatter plot
+
+Make a scatter plot with x-axis: Sepal.Length and y-axis: Sepal.Width, and the species should be shown in different colors
+
+```{r}
+ggplot(
+       data=iris,
+       mapping=aes(
+                    x=Sepal.Length,
+                    y=Sepal.Width,
+                    color=Species)
+        ) + geom_point()
+```
+
+### Regression line
+
+Add regression line for the previous plot with the whole dataset (regardless of the species)
+
+```{r}
+ggplot(
+      data=iris,
+      mapping=aes(
+                    x=Sepal.Length,
+                    y=Sepal.Width)
+      ) + geom_point(aes(color=Species)) + geom_smooth(formula = y ~ x, method="lm")
+```
+
+### Pearson correlation
+
+Calculate the Pearson correlation for this plot
+
+```{r}
+cor(
+      iris$Sepal.Length,
+      iris$Sepal.Width,
+      method = 'pearson')
+```
+
+
+## Boxplot
+
+Make the boxplot for Petal.Width with 3 species separately in the x-axis in different colors  
+
+```{r}
+ggplot(
+        data=iris,
+        mapping=aes(
+                    x=Species, 
+                    y=Petal.Width,
+                    color=Species)
+        )+ geom_boxplot() 
+```
+
+## Histogram
+
+Make the histogram for Petal.Width with 3 species separately in x-axis in different colors
+
+
+```{r}
+ggplot(
+        data=iris,
+        mapping=aes( 
+                      x=Petal.Width, 
+                      color=Species)
+        )+ geom_histogram(bins=30) 
+```
+
+## T-test
+
+Run the t-test of Petal.Width between setosa and virginica, and give the conclusion if the width is a statistically significant difference between 2 species
+```{r}
+t.test(
+        Petal.Width ~ Species, 
+        iris, 
+        Species %in% c("setosa", "virginica")
+       )
+```
+### Conclusion   
+
+The p-value of 2.2e-16 is less than the Alpha level of 0.05
+The mean values of the two species are therefore not the same and there is a significant difference in the petal Width of the species
+
+
